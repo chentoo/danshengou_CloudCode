@@ -1,0 +1,126 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <script type="text/javascript" src="js/WeixinApi.js"></script>
+
+    <title>如何优雅地度过圣诞节</title>
+
+    <style type="text/css">
+    body {
+        background: url('image/image_back_home.jpg') no-repeat;
+        background-attachment: fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        background-size: cover;
+    }
+    #backButton {
+        position: absolute;
+        left: 50%;
+        bottom: 10%;
+        width: 104px;
+        height: 46px;
+        display: block;
+        margin-left: -52px;
+        background-image: url('icon/btn_saxfailed_back.png');
+        background-size: 100%;
+    }
+    #peopleImage {
+        position: absolute;
+        width: 243px;
+        height: 409px;
+        left: 50%;
+        top: 15px;
+        display: block;
+        margin-left: -122px;
+        background-image: url('image/image_sexfaild_people.png');
+        background-size: 100%;
+    }
+    </style>
+
+    <script type="text/javascript">
+    function backButtonPressed() {
+        window.history.back();
+    }
+    </script>
+</head>
+
+<body>
+    <div id="peopleImage">
+    </div>
+
+    <div id='backButton' onclick="backButtonPressed()">
+    </div>
+    <script type="text/javascript">
+    // 方法1：不带任何参数，将以alert方式提示出错信息
+    // WeixinApi.enableDebugMode();
+
+    // 初始化WeixinApi，等待分享
+    WeixinApi.ready(function(Api) {
+
+        // 微信分享的数据
+        var title = '【神测试】单身狗如何优雅地度过圣诞节？嘿嘿~';
+        var imageUrl1 = 'http://chentoo.com/z/avatar/' + Math.floor(Math.random()*21 + 10) + '.jpg';
+
+        var wxData = {
+            "appId": "", // 服务号可以填写appId
+            "imgUrl": imageUrl1,
+            "link": 'http://chentoo.com/z',
+            "desc": title,
+            "title": "【神测试】单身狗如何优雅地度过圣诞节？"
+        };
+
+        // 分享的回调
+        var wxCallbacks = {
+            // 收藏操作不执行回调，默认是开启(true)的
+            favorite: false,
+
+            // 分享操作开始之前
+            ready: function() {
+                // 你可以在这里对分享的数据进行重组
+                // alert("准备分享");
+            },
+            // 分享被用户自动取消
+            cancel: function(resp) {
+                // 你可以在你的页面上给用户一个小Tip，为什么要取消呢？
+                // alert("分享被取消，msg=" + resp.err_msg);
+            },
+            // 分享失败了
+            fail: function(resp) {
+                // 分享失败了，是不是可以告诉用户：不要紧，可能是网络问题，一会儿再试试？
+                // alert("分享失败，msg=" + resp.err_msg);
+            },
+            // 分享成功
+            confirm: function(resp) {
+                // 分享成功了，我们是不是可以做一些分享统计呢？
+                // alert("分享成功，msg=" + resp.err_msg);
+                window.location.href = "http://mp.weixin.qq.com/s?__biz=MzAwMjEwMjE4Mg==&mid=204646094&idx=1&sn=f9bda8d1d5df1e15856dc10c1853f261#rd";
+            },
+            // 整个分享过程结束
+            all: function(resp, shareTo) {
+                // 如果你做的是一个鼓励用户进行分享的产品，在这里是不是可以给用户一些反馈了？
+                // alert("分享" + (shareTo ? "到" + shareTo : "") + "结束，msg=" + resp.err_msg);
+
+            }
+        };
+
+        // 用户点开右上角popup菜单后，点击分享给好友，会执行下面这个代码
+        Api.shareToFriend(wxData, wxCallbacks);
+
+        // 点击分享到朋友圈，会执行下面这个代码
+        Api.shareToTimeline(wxData, wxCallbacks);
+
+        // 点击分享到腾讯微博，会执行下面这个代码
+        Api.shareToWeibo(wxData, wxCallbacks);
+
+        // iOS上，可以直接调用这个API进行分享，一句话搞定
+        Api.generalShare(wxData, wxCallbacks);
+    });
+    </script>
+</body>
+
+</html>

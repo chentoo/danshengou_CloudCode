@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+
+    <!-- Sets initial viewport load and disables zooming  -->
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+
+    <!-- Makes your prototype chrome-less once bookmarked to your phone's home screen -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <script type="text/javascript" src="js/WeixinApi.js"></script>
+    <title>如何优雅地度过圣诞节</title>
+
+    <style type="text/css">
+    html {
+        height: 100%;
+    }
+    body {
+        text-align: center;
+        width: auto;
+        height: 100%;
+        background-color: #504393;
+        padding: 10px;
+    }
+    img {
+        width: 100%;
+        height: 100%;
+    }
+    table {
+        width: 100%;
+    }
+    tr {
+        width: 100%;
+        /*padding-left: 15px;*/
+        /*padding-right: 15px;*/
+    }
+    .title_layout {
+        width: 60%;
+        margin-left: auto;
+        margin-right: auto;
+        padding-top: 15px;
+    }
+    .progress_layout {
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 10px;
+    }
+    .answer_layout {
+        text-align: center;
+        width: 90%;
+        height: 50%;
+        margin-left: auto;
+        margin-right: auto;
+        background: url(./img/answer_bg.png);
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+    }
+    .back_layout {
+        margin-top: 30px;
+        width: 25%;
+    }
+    </style>
+</head>
+
+<body onLoad="init()">
+
+    <div class="title_layout">
+
+        <img src="./img/title_icon.png" alt="单身狗如何优雅的度过圣诞节" />
+
+    </div>
+
+    <div class="progress_layout">
+
+        <img id="progress" src="./img/progressbar/progress1.png" alt="答题进度" />
+
+    </div>
+
+    <div>
+        <table id="list_container" class="answer_layout">
+        </table>
+    </div>
+
+    <div>
+        <img id="back_btn" class="back_layout" src="./img/back.png" alt="返回上一题" />
+    </div>
+
+    <script type="text/javascript">
+    var progressBars = [
+        './img/progressbar/progress2.png',
+        './img/progressbar/progress3.png',
+        './img/progressbar/progress4.png',
+        './img/progressbar/progress5.png',
+        './img/progressbar/progress6.png',
+        './img/progressbar/progress7.png',
+        './img/progressbar/progress8.png',
+        './img/progressbar/progress9.png',
+        './img/progressbar/progress10.png'
+    ];
+
+    var answerIcons = [
+        './img/a.png',
+        './img/b.png',
+        './img/c.png',
+        './img/d.png'
+    ];
+
+    var questionBoyArray = new Array({
+        'subject': '你心目中的女神类型是？',
+        'answers': [{
+            'text': '清纯女神',
+            'icon': './img/icon/gaoyy.png',
+            'marks': 8
+        }, {
+            'text': '文艺女神',
+            'icon': './img/icon/tangw.png',
+            'marks': 10
+        }, {
+            'text': '霸气女神',
+            'icon': './img/icon/fanbb.png',
+            'marks': 7
+        }, {
+            'text': '性感女神',
+            'icon': './img/icon/shuq.png',
+            'marks': 6
+        }],
+    }, {
+        'subject': '你打算如何成功约到女生呢？',
+        'answers': [{
+            'text': '群发短信给所有单身女生：圣诞有空吗？',
+            'icon': '',
+            'marks': 6
+        }, {
+            'text': '只约心仪已久的女神',
+            'icon': '',
+            'marks': 10
+        }, {
+            'text': '微信摇一摇',
+            'icon': '',
+            'marks': 3
+        }],
+    }, {
+        'subject': '你会怎样约女神呢？',
+        'answers': [{
+            'text': '直接打电话：圣诞一起玩吗？',
+            'icon': '',
+            'marks': 5
+        }, {
+            'text': '发QQ消息：在吗在吗？',
+            'icon': '',
+            'marks': 3
+        }, {
+            'text': '发微信消息：圣诞节有安排了吗？',
+            'icon': '',
+            'marks': 10
+        }, {
+            'text': '每天给女神微信朋友圈点赞并留言：好美啊！圣诞约吗？',
+            'icon': '',
+            'marks': 6
+        }],
+    }, {
+        'subject': '终于约到女生了，圣诞节你准备怎么安排呢？',
+        'answers': [{
+            'text': '文艺路线：去电影院看爱情片',
+            'icon': '',
+            'marks': 10
+        }, {
+            'text': '尖叫路线：去欢乐谷坐海盗船',
+            'icon': '',
+            'marks': 8
+        }, {
+            'text': '学霸路线：帮女神占好座，一起上自习',
+            'icon': '',
+            'marks': 3
+        }],
+    }, {
+        'subject': '离圣诞节还有几天呢，你这几天打算',
+        'answers': [{
+            'text': '外形很关键！哥去理个发，再整套帅气的衣服',
+            'icon': '',
+            'marks': 8
+        }, {
+            'text': '请女神的闺蜜吃饭，咨询约会攻略',
+            'icon': '',
+            'marks': 10
+        }, {
+            'text': '不特别准备，哥还要复习考试呢',
+            'icon': '',
+            'marks': 3
+        }],
+    }, {
+        'subject': '忽然想到了什么，打开钱包一看余额不足……你会',
+        'answers': [{
+            'text': '靠老妈：打电话给老妈说钱又不够花啦...',
+            'icon': '',
+            'marks': 3
+        }, {
+            'text': '靠哥们：问哥们借点儿，下个月还给他',
+            'icon': '',
+            'marks': 6
+        }, {
+            'text': '靠自己：学生兼职【挣钱花】，约会不再羞答答！',
+            'icon': '',
+            'marks': 10
+        }],
+    }, {
+        'subject': '约会前，你会带上',
+        'answers': [{
+            'text': '霸道总裁型：只用带钱包，哥有钱任性！',
+            'icon': '',
+            'marks': 6
+        }, {
+            'text': '暖男型：带上钱包、伞、纸巾、姨妈巾等贴心用品',
+            'icon': '',
+            'marks': 10
+        }, {
+            'text': '羞涩型：我内向，怕冷场，再带个朋友~ ',
+            'icon': '',
+            'marks': 3
+        }],
+    }, {
+        'subject': '平安夜嘛，你打算送给女神一件礼物，会是什么呢？',
+        'answers': [{
+            'text': '一只红彤彤的苹果',
+            'icon': '',
+            'marks': 3
+        }, {
+            'text': '饱含爱意的一束玫瑰花',
+            'icon': '',
+            'marks': 6
+        }, {
+            'text': '暖暖的围巾手套~ ',
+            'icon': '',
+            'marks': 6
+        }, {
+            'text': '亲手做的手工艺品和贺卡 ~ ',
+            'icon': '',
+            'marks': 10
+        }],
+    }, {
+        'subject': '欢乐的时光总是那么短暂，约会很快就结束了，你打算',
+        'answers': [{
+            'text': '送她到宿舍楼下，礼貌告别',
+            'icon': '',
+            'marks': 8
+        }, {
+            'text': '趁热打铁，追问明天是否有空一起上自习',
+            'icon': '',
+            'marks': 10
+        }, {
+            'text': '各回各家，各找各妈',
+            'icon': '',
+            'marks': 3
+        }, {
+            'text': '买通的哥，绕路开车，直到宿舍关门才到，你懂的~',
+            'icon': '',
+            'marks': 6
+        }],
+    });
+
+    var questionGirlArray = new Array({
+        'subject': '你心仪的男神是什么类型？',
+        'answers': [{
+            'text': '阳光逗逼型',
+            'icon': './img/icon/dengc.png',
+            'marks': 8
+        }, {
+            'text': '高冷羞射型',
+            'icon': './img/icon/dumj.png',
+            'marks': 10
+        }, {
+            'text': '霸道总裁型',
+            'icon': './img/icon/zhangh.png',
+            'marks': 10
+        }, {
+            'text': '温柔暖男型',
+            'icon': './img/icon/piaohz.png',
+            'marks': 8
+        }],
+    }, {
+        'subject': '室友纷纷都有约会了，你还没有安排，你会',
+        'answers': [{
+            'text': '不打算主动，坐等备胎来约',
+            'icon': '',
+            'marks': 6
+        }, {
+            'text': '抓住机会，主动出击约男神！',
+            'icon': '',
+            'marks': 10
+        }, {
+            'text': '我还是复习考试要紧！',
+            'icon': '',
+            'marks': 3
+        }],
+    }, {
+        'subject': '忽然收到一个QQ消息，有个男生约你，可惜不是男神，你会',
+        'answers': [{
+            'text': '果断拒绝',
+            'icon': '',
+            'marks': 10
+        }, {
+            'text': '看脸！',
+            'icon': '',
+            'marks': 8
+        }, {
+            'text': '呵呵，去洗澡了',
+            'icon': '',
+            'marks': 6
+        }],
+    }, {
+        'subject': '发现男神最近和情敌走得比较近，你会',
+        'answers': [{
+            'text': '画小圈圈、扎小人诅咒她~',
+            'icon': '',
+            'marks': 4
+        }, {
+            'text': '努力减肥加打扮，比情敌更漂亮！',
+            'icon': '',
+            'marks': 10
+        }, {
+            'text': '假装看不见',
+            'icon': '',
+            'marks': 6
+        }],
+    }, {
+        'subject': '你打算怎样约你的男神呢？',
+        'answers': [{
+            'text': '在男神经常粗现的路上，制造多次偶遇',
+            'icon': '',
+            'marks': 10
+        }, {
+            'text': '给男神发微信问：圣诞打算怎么过呢？',
+            'icon': '',
+            'marks': 6
+        }, {
+            'text': '我还是复习考试要紧！',
+            'icon': '',
+            'marks': 3
+        }],
+    }, {
+        'subject': '终于约到男神！不过，离圣诞节还有几天呢，你打算',
+        'answers': [{
+            'text': '买一套美美的衣服，换个美美的发型，靓瞎男神的眼！',
+            'icon': '',
+            'marks': 8
+        }, {
+            'text': '连夜通读男神的微信朋友圈，知己知彼，百战百胜！',
+            'icon': '',
+            'marks': 10
+        }, {
+            'text': '我还是复习考试要紧！',
+            'icon': '',
+            'marks': 3
+        }],
+    }, {
+        'subject': '圣诞节你打算和男神一起做点什么呢？',
+        'answers': [{
+            'text': '做爱做的事，嘿嘿',
+            'icon': '',
+            'marks': 6
+        }, {
+            'text': '看个恐怖片，伺机倒入男神怀中',
+            'icon': '',
+            'marks': 10
+        }, {
+            'text': '关你P事~ ',
+            'icon': '',
+            'marks': 4
+        }],
+    }, {
+        'subject': '打算送给男神一份礼物，你会选择？',
+        'answers': [{
+            'text': '投其所好，比如男神喜欢已久的机械键盘',
+            'icon': '',
+            'marks': 7
+        }, {
+            'text': '温暖路线：亲手织一条暖暖的围巾',
+            'icon': '',
+            'marks': 10
+        }, {
+            'text': '我把自己送给他~[害羞表情] ',
+            'icon': '',
+            'marks': 4
+        }],
+    }, {
+        'subject': '忽然想到了什么，打开钱包一看余额不足！你会',
+        'answers': [{
+            'text': '靠老爸：打电话给老爸，撒个娇~',
+            'icon': '',
+            'marks': 2
+        }, {
+            'text': '靠朋友：到处蹭饭+省吃俭用，为了男神，值得！',
+            'icon': '',
+            'marks': 3
+        }, {
+            'text': '靠自己：使用学生兼职神器【挣钱花】，劳动光荣不败家！',
+            'icon': '',
+            'marks': 10
+        }],
+    });
+
+    var scores;
+
+    var questionArray;
+
+    function init() {
+        var isboy = getQueryStringRegExp('boy');
+
+        if ("1" == isboy) {
+            questionArray = questionBoyArray;
+        } else {
+            questionArray = questionGirlArray;
+        }
+
+        scores = new Array(questionArray.length);
+
+        initList(0);
+    }
+
+    function submitScore() {
+
+        var scoreCount = 0;
+
+        for (var score in scores) {
+            scoreCount += scores[score];
+        }
+
+        alert("result.html?score=" + scoreCount +"&boy=" + getQueryStringRegExp('boy'));
+
+        window.location.href = "result.html?score=" + scoreCount +"&boy=" + getQueryStringRegExp('boy');
+
+    }
+
+    function answerClick(index, answer) {
+        //、记录分数
+        scores[index] = answer.marks;
+
+        // ------------------------------------
+        //判断是否是最后一题
+        if (index == questionArray.length - 1) {
+            // 如果是最后一题
+            submitScore();
+            return;
+        }
+        //重新加载界面
+        initList(index + 1);
+    }
+
+    function initList(index) {
+
+        //返回上一题按钮
+        var backBtn = document.getElementById('back_btn');
+        backBtn.style.display = 'none';
+        if (index > 0) {
+            //已经是第一题
+            backBtn.onclick = function() {
+                initList(index - 1);
+            }
+            backBtn.style.display = '';
+        }
+
+        //进度条
+        var progressBar = document.getElementById('progress');
+        progressBar.src = progressBars[index];
+
+        var currentQuestion = questionArray[index];
+
+        var currentSubject = currentQuestion['subject'];
+
+        var currentAnswers = currentQuestion['answers'];
+
+        var tableNode = document.getElementById('list_container');
+        //清空现有界面
+        for (var i = tableNode.rows.length - 1; i >= 0; i--) {
+            tableNode.deleteRow(i);
+        }
+
+        tableNode.style.height = (currentAnswers.length + 1) * 60 + 'px';
+
+        var subjectTr = document.createElement('tr');
+        var subjectTd = document.createElement('td');
+        subjectTd.align = 'left';
+        subjectTd.colSpan = 3;
+        subjectTd.innerHTML = currentSubject;
+        subjectTd.style.cssText = 'padding:5px 15px;width:100%;height:60px;background: url(./img/question_bg.png);background-size: 100% 100%;background-position: center;background-repeat: no-repeat;font-size: 15px;color: #6c4c00;'
+        subjectTr.appendChild(subjectTd);
+        tableNode.appendChild(subjectTr);
+
+        for (var answerIndex in currentAnswers) {
+
+            var answer = currentAnswers[answerIndex];
+
+            var trNode = document.createElement('tr');
+
+            (function(answer) {
+                trNode.onclick = function() {
+                    answerClick(index, answer);
+                };
+            })(answer);
+
+            //order
+            var tdOrder = document.createElement('td');
+            tdOrder.align = 'left';
+            tdOrder.style.width = '20%';
+            tdOrder.style.height = '60px';
+            var orderImg = document.createElement('img');
+            orderImg.src = answerIcons[answerIndex];
+            orderImg.style.cssText = 'width: 30px;height: 30px;margin: 15px;';
+            tdOrder.appendChild(orderImg);
+            trNode.appendChild(tdOrder);
+
+            //text
+            var tdText = document.createElement('td');
+            tdText.align = 'left';
+            tdText.style.height = '60px';
+            tdText.style.paddingRight = '10px';
+            var span = document.createElement('span');
+            span.innerHTML = answer.text;
+            span.style.cssText = 'text-align: left;font-size: 14px;color: #ffffff';
+            tdText.appendChild(span);
+            trNode.appendChild(tdText);
+
+            //icon
+            var tdIcon = document.createElement('td');
+            tdIcon.align = 'right';
+            tdIcon.style.width = '30%';
+            tdOrder.style.height = '60px';
+            var iconImg = document.createElement('img');
+            iconImg.src = answer.icon;
+            iconImg.style.cssText = 'width: auto;height: 40px;float: right;margin-top: 10px;margin-bottom: 10px;margin-left: 15px;margin-right: 15px;';
+            tdIcon.appendChild(iconImg);
+
+            if (answer.icon.length < 1) {
+                //没有图片
+                tdIcon.style.display = 'none';
+            } else {
+                tdIcon.style.display = '';
+            }
+
+            trNode.appendChild(tdIcon);
+
+            tableNode.appendChild(trNode);
+
+            if (answerIndex < currentAnswers.length - 1) {
+                //分割线
+                // alert(answerIndex);
+                // alert(currentAnswers.length);
+                var dividerTr = document.createElement('tr');
+                dividerTr.height = '2px';
+                var dividerTd = document.createElement('td');
+                dividerTd.height = '2px';
+                dividerTd.colSpan = 3;
+                var dividerImg = document.createElement('img');
+                dividerImg.src = './img/divider.png';
+                dividerTd.appendChild(dividerImg);
+                dividerTr.appendChild(dividerTd);
+                tableNode.appendChild(dividerTr);
+            }
+        }
+
+    }
+
+    function getQueryStringRegExp(name) {
+        var reg = new RegExp("(^|\\?|&)" + name + "=([^&]*)(\\s|&|$)", "i");
+        if (reg.test(location.href)) return unescape(RegExp.$2.replace(/\+/g, " "));
+        return "";
+    }
+    </script>
+
+        <script type="text/javascript">
+    // 方法1：不带任何参数，将以alert方式提示出错信息
+    // WeixinApi.enableDebugMode();
+
+    // 初始化WeixinApi，等待分享
+    WeixinApi.ready(function(Api) {
+
+        // 微信分享的数据
+        var title = '【神测试】单身狗如何优雅地度过圣诞节？嘿嘿~';
+        var imageUrl1 = 'http://chentoo.com/z/avatar/' + Math.floor(Math.random() * 21 + 10) + '.jpg';
+
+        var wxData = {
+            "appId": "", // 服务号可以填写appId
+            "imgUrl": imageUrl1,
+            "link": 'http://chentoo.com/z',
+            "desc": title,
+            "title": "【神测试】单身狗如何优雅地度过圣诞节？"
+        };
+
+        // 分享的回调
+        var wxCallbacks = {
+            // 收藏操作不执行回调，默认是开启(true)的
+            favorite: false,
+
+            // 分享操作开始之前
+            ready: function() {
+                // 你可以在这里对分享的数据进行重组
+                // alert("准备分享");
+            },
+            // 分享被用户自动取消
+            cancel: function(resp) {
+                // 你可以在你的页面上给用户一个小Tip，为什么要取消呢？
+                // alert("分享被取消，msg=" + resp.err_msg);
+            },
+            // 分享失败了
+            fail: function(resp) {
+                // 分享失败了，是不是可以告诉用户：不要紧，可能是网络问题，一会儿再试试？
+                // alert("分享失败，msg=" + resp.err_msg);
+            },
+            // 分享成功
+            confirm: function(resp) {
+                // 分享成功了，我们是不是可以做一些分享统计呢？
+                // alert("分享成功，msg=" + resp.err_msg);
+                window.location.href = "http://mp.weixin.qq.com/s?__biz=MzAwMjEwMjE4Mg==&mid=204646094&idx=1&sn=f9bda8d1d5df1e15856dc10c1853f261#rd";
+
+            },
+            // 整个分享过程结束
+            all: function(resp, shareTo) {
+                // 如果你做的是一个鼓励用户进行分享的产品，在这里是不是可以给用户一些反馈了？
+                // alert("分享" + (shareTo ? "到" + shareTo : "") + "结束，msg=" + resp.err_msg);
+            }
+        };
+
+        // 用户点开右上角popup菜单后，点击分享给好友，会执行下面这个代码
+        Api.shareToFriend(wxData, wxCallbacks);
+
+        // 点击分享到朋友圈，会执行下面这个代码
+        Api.shareToTimeline(wxData, wxCallbacks);
+
+        // 点击分享到腾讯微博，会执行下面这个代码
+        Api.shareToWeibo(wxData, wxCallbacks);
+
+        // iOS上，可以直接调用这个API进行分享，一句话搞定
+        Api.generalShare(wxData, wxCallbacks);
+    });
+    </script>
+</body>
+
+</html>

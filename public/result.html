@@ -1,0 +1,419 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>如何优雅地度过圣诞节</title>
+    <script type="text/javascript" src="js/WeixinApi.js"></script>
+
+    <style type="text/css">
+    #header {
+        position: relative;
+    }
+    #header-content {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+    }
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+    }
+    body {
+        background: #504293 no-repeat;
+        background-attachment: fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        background-size: cover;
+    }
+    #retryButton {
+        position: absolute;
+        bottom: 170px;
+        width: 124px;
+        height: 46px;
+        display: block;
+        right: 55%;
+        background-image: url('icon/btn_result_retry.png');
+        background-size: 100%;
+    }
+    #shareButton {
+        position: absolute;
+        bottom: 170px;
+        width: 124px;
+        height: 46px;
+        display: block;
+        left: 55%;
+        background-image: url('icon/btn_result_share.png');
+        background-size: 100%;
+    }
+    #titleIcon {
+        position: absolute;
+        width: 245px;
+        height: 82px;
+        left: 50%;
+        top: 10px;
+        display: block;
+        margin-left: -122px;
+        background-image: url('icon/icon_result_title.png');
+        background-size: 100%;
+    }
+    #scoreLabel {
+        position: absolute;
+        width: 100%;
+        height: 60px;
+        top: 80px;
+        display: block;
+        margin-left: 0px;
+        text-align: center;
+        color: white;
+        font-family: Helvetica;
+    }
+    span.scoreNum {
+        font-size: 60px;
+    }
+    span.scoreText {
+        font-size: 40px;
+    }
+    #scoreTipsLabel1 {
+        position: absolute;
+        width: 100%;
+        height: 20px;
+        top: 145px;
+        display: block;
+        margin-left: 0px;
+        text-align: center;
+        color: white;
+        font-family: Helvetica;
+        font-size: 16px;
+    }
+    #scoreTipsLabel2 {
+        position: absolute;
+        width: 80%;
+        top: 180px;
+        display: block;
+        left: 50%;
+        margin-left: -42%;
+        padding-top: 7px;
+        padding-left: 9px;
+        padding-right: 7px;
+        padding-bottom: 7px;
+        text-align: left;
+        color: white;
+        font-family: Helvetica;
+        font-size: 14px;
+        background-color: #5d4fa2;
+        overflow: auto;
+        border-radius: 7px;
+    }
+    #bottomRedView {
+        position: absolute;
+        width: 100%;
+        height: 130px;
+        bottom: 0px;
+        margin-left: 0px;
+        display: block;
+        background: #ec4046;
+    }
+    #bottomRedViewText {
+        position: absolute;
+        width: 159px;
+        height: 96px;
+        top: 50%;
+        margin-top: -48px;
+        margin-left: 10%;
+        display: block;
+        background-image: url('icon/icon_result_bottom_text.png');
+        background-size: 100%;
+    }
+    #bottomRedViewOldBoy {
+        position: absolute;
+        width: 99px;
+        height: 116px;
+        top: 50%;
+        margin-top: -58px;
+        margin-left: 60%;
+        display: block;
+        background-image: url('icon/icon_result_bottom_oldBoy.png');
+        background-size: 100%;
+    }
+    #bottomRedViewLine {
+        position: absolute;
+        width: 21px;
+        height: 80px;
+        margin-top: -30px;
+        margin-left: 60%;
+        display: block;
+        background-image: url('icon/icon_result_bottom_line.png');
+        background-size: 100%;
+    }
+    #shareTextView {
+        position: absolute;
+        width: 200px;
+        height: 184px;
+        margin-top: 100px;
+        left: 50%;
+        margin-left: -100px;
+        display: none;
+        background-image: url('icon/icon_share_text.png');
+        background-size: 100%;
+    }
+    #shareBackView {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        display: none;
+        background-color: black;
+        opacity: 0.84;
+    }
+    #shareJiantou {
+        position: absolute;
+        width: 95px;
+        height: 82px;
+        right: 20px;
+        margin-top: 5px;
+        display: none;
+        background-image: url('icon/icon_share_jiantou.png');
+        background-size: 100%;
+    }
+    </style>
+
+    <script type="text/javascript">
+    function retryButtonPressed() {
+        window.location.href = "index.html";
+
+    }
+
+    function shareButtonPressed() {
+        var x = document.getElementById("shareTextView");
+        x.style.display = 'block';
+        var y = document.getElementById("shareBackView");
+        y.style.display = 'block';
+        var z = document.getElementById("shareJiantou");
+        z.style.display = 'block';
+    }
+
+    function shareBackViewPressed() {
+        var x = document.getElementById("shareTextView");
+        x.style.display = 'none';
+        var y = document.getElementById("shareBackView");
+        y.style.display = 'none';
+        var z = document.getElementById("shareJiantou");
+        z.style.display = 'none';
+
+    }
+
+    var random = function(t1, t2, t3) { //t1为下限，t2为上限，t3为需要保留的小数位
+        function isNum(n) {
+            return /^\d+$/.test(n);
+        }
+        if (!t1 || (!isNum(t1))) {
+            t1 = 0;
+        }
+        if (!t2 || (!isNum(t2))) {
+            t2 = 1;
+        }
+        if (!t3 || (!isNum(t3))) {
+            t3 = 0;
+        }
+        t3 = t3 > 15 ? 15 : t3; // 小数位不能大于15位
+        var ra = Math.random() * (t2 - t1) + t1,
+            du = Math.pow(10, t3);
+        ra = Math.round(ra * du) / du;
+
+        return ra;
+    }
+
+    function getLevel() {
+        var score = getScore();
+
+        if (score < 60) {
+            return 4;
+        } else if (score < 74 && score >= 60) {
+            return 3;
+        } else if (score < 84 && score >= 74) {
+            return 2;
+        } else if (score >= 84) {
+            return 1;
+        }
+    }
+
+    function scoreTitle() {
+        // var ll = Math.floor(Math.random()*4 + 1);
+        var level = getLevel();
+        var boy = getQueryStringRegExp('boy');
+        if (boy === 1) {
+            if (level === 1) {
+                return '你的优雅指数击败了全国' + random(85, 99, 1) + '%的单身狗！';
+            } else if (level === 2) {
+                return '你的优雅指数击败了全国' + random(75, 84, 1) + '%的单身狗！';
+            } else if (level === 3) {
+                return '你的优雅指数排在全国' + random(40, 55, 1) + '%之后！';
+            } else if (level === 4) {
+                return '额…你的优雅指数排名在全国' + random(20, 39, 1) + '%之后…';
+            };
+
+        } else {
+            if (level === 1) {
+                return '你的优雅指数击败了全国' + random(85, 99, 1) + '%的女生！';
+            } else if (level === 2) {
+                return '你的优雅指数击败了全国' + random(75, 84, 1) + '%的女生！';
+            } else if (level === 3) {
+                return '你的优雅指数排在全国' + random(40, 55, 1) + '%之后！';
+            } else if (level === 4) {
+                return '额…你的优雅指数排名在全国' + random(20, 39, 1) + '%之后…';
+            };
+        }
+    }
+
+    function scoreDetail() {
+        var level = getLevel();
+
+        var boy = getQueryStringRegExp('boy');
+        if (boy === 1) {
+            if (level === 1) {
+                return '你具备胆大心细脸皮厚的优良品质，望你理论结合实际，学以致用，圣诞分分钟拿下女神！';
+            } else if (level === 2) {
+                return '小伙子，只要你胆子要再大一点，脸皮再厚一点，步子再迈开一点，假以时日，追到女神不是梦！';
+            } else if (level === 3) {
+                return '追女神是讲究策略、战术，还要讲究细节滴！要不，再来一局？';
+            } else if (level === 4) {
+                return '怎么说你好呢？你说你为什么没有女朋友？为什么？要不，哥们，再来一局试试？';
+            };
+        } else {
+            if (level === 1) {
+                return '你是个积极主动、勇于追求真爱的人，思想上的女流氓，生活中的好姑娘！男神早晚是你滴！';
+            } else if (level === 2) {
+                return '遇到心仪对象，把握时机，主动出击，投其所好，胆大心细脸皮厚，男神离你不远喽~~';
+            } else if (level === 3) {
+                return '21世纪，男追女，女追男重要吗？倒追不可耻，可耻的是遇到真爱不敢追！再来一局吧？';
+            } else if (level === 4) {
+                return '一定是打开的方式不对！要不再来一局吧~';
+            };
+        }
+    }
+
+    function getScore() {
+        return getQueryStringRegExp('score');
+    }
+
+    function getQueryStringRegExp(name) {
+        var reg = new RegExp("(^|\\?|&)" + name + "=([^&]*)(\\s|&|$)", "i");
+        if (reg.test(location.href)) return unescape(RegExp.$2.replace(/\+/g, " "));
+        return "";
+    }
+    </script>
+</head>
+
+<body>
+    <div id="titleIcon"></div>
+    <div id="shareButton" onclick="shareButtonPressed()"></div>
+    <div id="retryButton" onclick="retryButtonPressed()"></div>
+    <div id="scoreLabel">
+        <span class="scoreNum">       
+            <script type="text/javascript">
+            document.write(getScore());
+            </script>
+        </span>
+        <span class="scoreText">分</span>
+    </div>
+    <div id="scoreTipsLabel1">
+        <script type="text/javascript">
+        document.write(scoreTitle())
+        </script>
+    </div>
+    <div id="scoreTipsLabel2">
+        <script type="text/javascript">
+        document.write(scoreDetail())
+        </script>
+    </div>
+
+    <div id="bottomRedView">
+        <div id="bottomRedViewText"></div>
+        <div id="bottomRedViewOldBoy"></div>
+        <div id="bottomRedViewLine"></div>
+    </div>
+
+    <div id="shareBackView" onclick="shareBackViewPressed()"></div>
+    <div id="shareTextView"></div>
+    <div id="shareJiantou"></div>
+
+    <script type="text/javascript">
+    // 方法1：不带任何参数，将以alert方式提示出错信息
+    // WeixinApi.enableDebugMode();
+
+    // 初始化WeixinApi，等待分享
+    WeixinApi.ready(function(Api) {
+
+        // 微信分享的数据
+
+        var imageUrl1 = 'http://chentoo.com/z/avatar/' + Math.floor(Math.random() * 21 + 10) + '.jpg';
+        var timeLineData = {
+            "appId": "", // 服务号可以填写appId
+            "imgUrl": imageUrl1,
+            "link": 'http://chentoo.com/z',
+            "desc": '【神测试】单身狗如何优雅地度过圣诞节-我的优雅指数' + document.getElementsByClassName("scoreNum")[0].innerText + '分!排名在全国...',
+            "title": document.getElementById("scoreTipsLabel1").innerText + document.getElementById("scoreTipsLabel2").innerText
+        };
+        var friendData = {
+            "appId": "", // 服务号可以填写appId
+            "imgUrl": imageUrl1,
+            "link": 'http://chentoo.com/z',
+            "desc": '【神测试】单身狗如何优雅地度过圣诞节-我的优雅指数' + document.getElementsByClassName("scoreNum")[0].innerText + '分!排名在全国...',
+            "title": document.getElementById("scoreTipsLabel1").innerText + document.getElementById("scoreTipsLabel2").innerText
+        };
+
+        // 分享的回调
+        var wxCallbacks = {
+            // 收藏操作不执行回调，默认是开启(true)的
+            favorite: false,
+
+            // 分享操作开始之前
+            ready: function() {
+                // 你可以在这里对分享的数据进行重组
+                // alert("准备分享");
+            },
+            // 分享被用户自动取消
+            cancel: function(resp) {
+                // 你可以在你的页面上给用户一个小Tip，为什么要取消呢？
+                // alert("分享被取消，msg=" + resp.err_msg);
+            },
+            // 分享失败了
+            fail: function(resp) {
+                // 分享失败了，是不是可以告诉用户：不要紧，可能是网络问题，一会儿再试试？
+                // alert("分享失败，msg=" + resp.err_msg);
+            },
+            // 分享成功
+            confirm: function(resp) {
+                // 分享成功了，我们是不是可以做一些分享统计呢？
+                // alert("分享成功，msg=" + resp.err_msg);
+                window.location.href = "http://mp.weixin.qq.com/s?__biz=MzAwMjEwMjE4Mg==&mid=204646094&idx=1&sn=f9bda8d1d5df1e15856dc10c1853f261#rd";
+
+            },
+            // 整个分享过程结束
+            all: function(resp, shareTo) {
+                // 如果你做的是一个鼓励用户进行分享的产品，在这里是不是可以给用户一些反馈了？
+                // alert("分享" + (shareTo ? "到" + shareTo : "") + "结束，msg=" + resp.err_msg);
+            }
+        };
+
+        // 用户点开右上角popup菜单后，点击分享给好友，会执行下面这个代码
+        Api.shareToFriend(timeLineData, wxCallbacks);
+
+        // 点击分享到朋友圈，会执行下面这个代码
+        Api.shareToTimeline(timeLineData, wxCallbacks);
+
+        // 点击分享到腾讯微博，会执行下面这个代码
+        Api.shareToWeibo(timeLineData, wxCallbacks);
+
+        // iOS上，可以直接调用这个API进行分享，一句话搞定
+        Api.generalShare(timeLineData, wxCallbacks);
+    });
+    </script>
+
+</body>
+
+</html>
