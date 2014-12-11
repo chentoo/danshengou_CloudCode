@@ -11,7 +11,9 @@
     <!-- Makes your prototype chrome-less once bookmarked to your phone's home screen -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
     <script type="text/javascript" src="js/WeixinApi.js"></script>
+
     <title>如何优雅地度过圣诞节</title>
 
     <style type="text/css">
@@ -39,12 +41,14 @@
     }
     .title_layout {
         width: 60%;
+        height: auto;
         margin-left: auto;
         margin-right: auto;
         padding-top: 15px;
     }
     .progress_layout {
         width: 100%;
+        height: auto;
         margin-left: auto;
         margin-right: auto;
         margin-bottom: 10px;
@@ -58,10 +62,12 @@
         background: url(./img/answer_bg.png);
         background-size: 100% 100%;
         background-repeat: no-repeat;
+        margin-bottom: 20px;
     }
     .back_layout {
-        margin-top: 30px;
+        margin: 15px;
         width: 25%;
+        height: auto;
     }
     </style>
 </head>
@@ -158,7 +164,7 @@
             'icon': '',
             'marks': 10
         }, {
-            'text': '每天给女神微信朋友圈点赞并留言：好美啊！圣诞约吗？',
+            'text': '每天给女神微信朋友圈点赞并留言：圣诞约吗？',
             'icon': '',
             'marks': 6
         }],
@@ -195,15 +201,15 @@
     }, {
         'subject': '忽然想到了什么，打开钱包一看余额不足……你会',
         'answers': [{
-            'text': '靠老妈：打电话给老妈说钱又不够花啦...',
+            'text': '打电话给老妈说钱又不够花啦...',
             'icon': '',
             'marks': 3
         }, {
-            'text': '靠哥们：问哥们借点儿，下个月还给他',
+            'text': '问哥们借点儿，下个月还给他',
             'icon': '',
             'marks': 6
         }, {
-            'text': '靠自己：学生兼职【挣钱花】，约会不再羞答答！',
+            'text': '使用学生兼职神器【挣钱花】，约会不再羞答答！',
             'icon': '',
             'marks': 10
         }],
@@ -282,7 +288,7 @@
             'marks': 8
         }],
     }, {
-        'subject': '室友纷纷都有约会了，你还没有安排，你会',
+        'subject': '闺蜜纷纷都有约会了，你还没有安排，你会',
         'answers': [{
             'text': '不打算主动，坐等备胎来约',
             'icon': '',
@@ -382,22 +388,22 @@
             'icon': '',
             'marks': 10
         }, {
-            'text': '我把自己送给他~[害羞表情] ',
+            'text': '我把自己送给他~[害羞] ',
             'icon': '',
             'marks': 4
         }],
     }, {
         'subject': '忽然想到了什么，打开钱包一看余额不足！你会',
         'answers': [{
-            'text': '靠老爸：打电话给老爸，撒个娇~',
+            'text': '打电话给老爸，撒个娇~',
             'icon': '',
             'marks': 2
         }, {
-            'text': '靠朋友：到处蹭饭+省吃俭用，为了男神，值得！',
+            'text': '到处蹭饭+省吃俭用，为了男神，值得！',
             'icon': '',
             'marks': 3
         }, {
-            'text': '靠自己：使用学生兼职神器【挣钱花】，劳动光荣不败家！',
+            'text': '使用学生兼职神器【挣钱花】，劳动光荣不败家！',
             'icon': '',
             'marks': 10
         }],
@@ -429,9 +435,9 @@
             scoreCount += scores[score];
         }
 
-        alert("result.html?score=" + scoreCount +"&boy=" + getQueryStringRegExp('boy'));
+        alert("result.html?score=" + scoreCount + "&boy=" + getQueryStringRegExp('boy'));
 
-        window.location.href = "result.html?score=" + scoreCount +"&boy=" + getQueryStringRegExp('boy');
+        window.location.href = "result.html?score=" + scoreCount + "&boy=" + getQueryStringRegExp('boy');
 
     }
 
@@ -454,13 +460,13 @@
 
         //返回上一题按钮
         var backBtn = document.getElementById('back_btn');
-        backBtn.style.display = 'none';
-        if (index > 0) {
-            //已经是第一题
-            backBtn.onclick = function() {
+        //已经是第一题
+        backBtn.onclick = function() {
+            if (index > 0) {
                 initList(index - 1);
+            } else {
+                window.history.back();
             }
-            backBtn.style.display = '';
         }
 
         //进度条
@@ -571,7 +577,7 @@
     }
     </script>
 
-        <script type="text/javascript">
+    <script type="text/javascript">
     // 方法1：不带任何参数，将以alert方式提示出错信息
     // WeixinApi.enableDebugMode();
 
