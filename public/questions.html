@@ -369,7 +369,7 @@
             'icon': '',
             'marks': 10
         }, {
-            'text': '我把自己送给他~[害羞] ',
+            'text': '我把自己送给他~ (^з^)',
             'icon': '',
             'marks': 4
         }],
@@ -389,6 +389,8 @@
             'marks': 10
         }],
     });
+
+    var trHeight = 50;
 
     var scores;
 
@@ -466,14 +468,14 @@
             tableNode.deleteRow(i);
         }
 
-        tableNode.style.height = (currentAnswers.length + 1) * 60 + 'px';
+        tableNode.style.height = (currentAnswers.length + 1) * trHeight + 'px';
 
         var subjectTr = document.createElement('tr');
         var subjectTd = document.createElement('td');
         subjectTd.align = 'left';
         subjectTd.colSpan = 3;
         subjectTd.innerHTML = currentSubject;
-        subjectTd.style.cssText = 'padding:5px 15px;width:100%;height:60px;background: url(./img/question_bg.png);background-size: 100% 100%;background-position: center;background-repeat: no-repeat;font-size: 15px;font-weight:bold;color: #6c4c00;'
+        subjectTd.style.cssText = 'padding:5px 15px;width:100%;height:' + trHeight + 'px;background: url(./img/question_bg.png);background-size: 100% 100%;background-position: center;background-repeat: no-repeat;font-size: 15px;font-weight:bold;color: #6c4c00;'
         subjectTr.appendChild(subjectTd);
         tableNode.appendChild(subjectTr);
 
@@ -493,17 +495,17 @@
             var tdOrder = document.createElement('td');
             tdOrder.align = 'left';
             tdOrder.style.width = '20%';
-            tdOrder.style.height = '60px';
+            tdOrder.style.height = trHeight + 'px';
             var orderImg = document.createElement('img');
             orderImg.src = answerIcons[answerIndex];
-            orderImg.style.cssText = 'width: 30px;height: 30px;margin: 15px;';
+            orderImg.style.cssText = 'width:auto;height: ' + (trHeight - 20) + 'px;margin: 10px;';
             tdOrder.appendChild(orderImg);
             trNode.appendChild(tdOrder);
 
             //text
             var tdText = document.createElement('td');
             tdText.align = 'left';
-            tdText.style.height = '60px';
+            tdText.style.height = trHeight + 'px';
             tdText.style.paddingRight = '10px';
             var span = document.createElement('span');
             span.innerHTML = answer.text;
@@ -515,10 +517,10 @@
             var tdIcon = document.createElement('td');
             tdIcon.align = 'right';
             tdIcon.style.width = '30%';
-            tdOrder.style.height = '60px';
+            tdOrder.style.height = trHeight + 'px';
             var iconImg = document.createElement('img');
             iconImg.src = answer.icon;
-            iconImg.style.cssText = 'width: auto;height: 50px;float: right;margin-top: 5px;margin-bottom: 5px;margin-left: 15px;margin-right: 15px;';
+            iconImg.style.cssText = 'width:auto;height: ' + (trHeight - 10) + 'px;float: right;margin-left: 15px;margin-right: 15px;';
             tdIcon.appendChild(iconImg);
 
             if (answer.icon.length < 1) {
