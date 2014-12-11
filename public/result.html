@@ -120,24 +120,24 @@
     }
     #bottomRedViewText {
         position: absolute;
-        width: 159px;
-        height: 96px;
-        top: 50%;
-        margin-top: -48px;
+        width: 150px;
+        height: 88px;
+        /*top: 50%;*/
+        bottom: 40px;
         margin-left: 10%;
         display: block;
-        background-image: url('icon/icon_result_bottom_text.png');
+        background-image: url('icon/icon_share_message.png');
         background-size: 100%;
     }
     #bottomRedViewOldBoy {
         position: absolute;
-        width: 99px;
+        width: 98px;
         height: 116px;
-        top: 50%;
-        margin-top: -58px;
+        /*top: 50%;*/
+        bottom: 10px;
         margin-left: 60%;
         display: block;
-        background-image: url('icon/icon_result_bottom_oldBoy.png');
+        background-image: url('icon/icon_share_boy.png');
         background-size: 100%;
     }
     #bottomRedViewLine {
@@ -269,6 +269,34 @@
         }
     }
 
+    function shareToFriendTitle() {
+        var level = getLevel();
+        var boy = getQueryStringRegExp('boy');
+        if (boy == 1) {
+            if (level === 1) {
+                return '我的优雅指数击败了全国' + random(85, 99, 1) + '%的单身狗！';
+            } else if (level === 2) {
+                return '我的优雅指数击败了全国' + random(75, 84, 1) + '%的单身狗！';
+            } else if (level === 3) {
+                return '我的优雅指数排在全国' + random(40, 55, 1) + '%之后！';
+            } else if (level === 4) {
+                return '额…我的优雅指数排名在全国' + random(20, 39, 1) + '%之后…';
+            };
+
+        } else {
+            if (level === 1) {
+                return '我的优雅指数击败了全国' + random(85, 99, 1) + '%的女生！';
+            } else if (level === 2) {
+                return '我的优雅指数击败了全国' + random(75, 84, 1) + '%的女生！';
+            } else if (level === 3) {
+                return '我的优雅指数排在全国' + random(40, 55, 1) + '%之后！';
+            } else if (level === 4) {
+                return '额…我的优雅指数排名在全国' + random(20, 39, 1) + '%之后…';
+            };
+        }
+
+    }
+
     function scoreDetail() {
         var level = getLevel();
 
@@ -331,11 +359,8 @@
         </script>
     </div>
 
-    <div id="bottomRedView">
-        <div id="bottomRedViewText"></div>
-        <div id="bottomRedViewOldBoy"></div>
-        <div id="bottomRedViewLine"></div>
-    </div>
+    <div id="bottomRedViewText"></div>
+    <div id="bottomRedViewOldBoy"></div>
 
     <div id="shareBackView" onclick="shareBackViewPressed()"></div>
     <div id="shareTextView"></div>
@@ -350,13 +375,13 @@
 
         // 微信分享的数据
 
-        var imageUrl1 = 'http://dsg.avosapps.com/avatar/' + Math.floor(Math.random()*21 + 10) + '.jpg';
+        var imageUrl1 = 'http://dsg.avosapps.com/avatar/' + Math.floor(Math.random() * 21 + 10) + '.jpg';
         var timeLineData = {
             "appId": "", // 服务号可以填写appId
             "imgUrl": imageUrl1,
             "link": 'http://dsg.avosapps.com',
             "desc": '【神测试】单身狗如何优雅地度过圣诞节-我的优雅指数' + document.getElementsByClassName("scoreNum")[0].innerText + '分!排名在全国...',
-            "title": document.getElementById("scoreTipsLabel1").innerText + document.getElementById("scoreTipsLabel2").innerText
+            "title": shareToFriendTitle() + document.getElementById("scoreTipsLabel2").innerText
         };
 
         // 分享的回调
