@@ -245,7 +245,7 @@
         // var ll = Math.floor(Math.random()*4 + 1);
         var level = getLevel();
         var boy = getQueryStringRegExp('boy');
-        if (boy === 1) {
+        if (boy == 1) {
             if (level === 1) {
                 return '你的优雅指数击败了全国' + random(85, 99, 1) + '%的单身狗！';
             } else if (level === 2) {
@@ -273,7 +273,8 @@
         var level = getLevel();
 
         var boy = getQueryStringRegExp('boy');
-        if (boy === 1) {
+        alert(boy);
+        if (boy == 1) {
             if (level === 1) {
                 return '你具备胆大心细脸皮厚的优良品质，望你理论结合实际，学以致用，圣诞分分钟拿下女神！';
             } else if (level === 2) {
