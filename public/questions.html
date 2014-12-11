@@ -39,14 +39,10 @@
     .img_title {
         width: 80%;
     }
-    .progress_layout {
+    .img_progress {
         width: 100%;
-        height: auto;
-        margin-left: auto;
-        margin-right: auto;
         margin-top: -5px;
         margin-bottom: 18px;
-        padding: 0px;
     }
     .answer_layout {
         text-align: center;
@@ -71,16 +67,10 @@
 
     <img class="img_title" src="./img/title_icon.png" alt="单身狗如何优雅的度过圣诞节" />
 
-    <div class="progress_layout">
+    <img id="progress" class="img_progress" src="./img/progressbar/progress1.png" alt="答题进度" />
 
-        <img id="progress" src="./img/progressbar/progress1.png" alt="答题进度" />
-
-    </div>
-
-    <div>
-        <table id="list_container" class="answer_layout">
-        </table>
-    </div>
+    <table id="list_container" class="answer_layout">
+    </table>
 
     <div>
         <img id="back_btn" class="back_layout" src="./img/back.png" alt="返回上一题" />
@@ -379,7 +369,7 @@
             'icon': '',
             'marks': 10
         }, {
-            'text': '我把自己送给他~[害羞] ',
+            'text': '我把自己送给他~ (^з^)',
             'icon': '',
             'marks': 4
         }],
@@ -399,6 +389,8 @@
             'marks': 10
         }],
     });
+
+    var trHeight = 50;
 
     var scores;
 
@@ -476,14 +468,14 @@
             tableNode.deleteRow(i);
         }
 
-        tableNode.style.height = (currentAnswers.length + 1) * 60 + 'px';
+        tableNode.style.height = (currentAnswers.length + 1) * trHeight + 'px';
 
         var subjectTr = document.createElement('tr');
         var subjectTd = document.createElement('td');
         subjectTd.align = 'left';
         subjectTd.colSpan = 3;
         subjectTd.innerHTML = currentSubject;
-        subjectTd.style.cssText = 'padding:5px 15px;width:100%;height:60px;background: url(./img/question_bg.png);background-size: 100% 100%;background-position: center;background-repeat: no-repeat;font-size: 15px;color: #6c4c00;'
+        subjectTd.style.cssText = 'padding:5px 15px;width:100%;height:' + trHeight + 'px;background: url(./img/question_bg.png);background-size: 100% 100%;background-position: center;background-repeat: no-repeat;font-size: 15px;font-weight:bold;color: #6c4c00;'
         subjectTr.appendChild(subjectTd);
         tableNode.appendChild(subjectTr);
 
@@ -503,21 +495,21 @@
             var tdOrder = document.createElement('td');
             tdOrder.align = 'left';
             tdOrder.style.width = '20%';
-            tdOrder.style.height = '60px';
+            tdOrder.style.height = trHeight + 'px';
             var orderImg = document.createElement('img');
             orderImg.src = answerIcons[answerIndex];
-            orderImg.style.cssText = 'width: 30px;height: 30px;margin: 15px;';
+            orderImg.style.cssText = 'width:auto;height: ' + (trHeight - 20) + 'px;margin: 10px;';
             tdOrder.appendChild(orderImg);
             trNode.appendChild(tdOrder);
 
             //text
             var tdText = document.createElement('td');
             tdText.align = 'left';
-            tdText.style.height = '60px';
+            tdText.style.height = trHeight + 'px';
             tdText.style.paddingRight = '10px';
             var span = document.createElement('span');
             span.innerHTML = answer.text;
-            span.style.cssText = 'text-align: left;font-size: 14px;color: #ffffff';
+            span.style.cssText = 'text-align: left;font-size: 14px;font-weight:bold;color: #ffffff';
             tdText.appendChild(span);
             trNode.appendChild(tdText);
 
@@ -525,10 +517,10 @@
             var tdIcon = document.createElement('td');
             tdIcon.align = 'right';
             tdIcon.style.width = '30%';
-            tdOrder.style.height = '60px';
+            tdOrder.style.height = trHeight + 'px';
             var iconImg = document.createElement('img');
             iconImg.src = answer.icon;
-            iconImg.style.cssText = 'width: auto;height: 40px;float: right;margin-top: 10px;margin-bottom: 10px;margin-left: 15px;margin-right: 15px;';
+            iconImg.style.cssText = 'width:auto;height: ' + (trHeight - 10) + 'px;float: right;margin-left: 15px;margin-right: 15px;';
             tdIcon.appendChild(iconImg);
 
             if (answer.icon.length < 1) {
@@ -544,12 +536,10 @@
 
             if (answerIndex < currentAnswers.length - 1) {
                 //分割线
-                // alert(answerIndex);
-                // alert(currentAnswers.length);
                 var dividerTr = document.createElement('tr');
-                dividerTr.height = '2px';
+                dividerTr.style.fontSize = '0px';
                 var dividerTd = document.createElement('td');
-                dividerTd.height = '2px';
+                dividerTd.style.fontSize = '0px';
                 dividerTd.colSpan = 3;
                 var dividerImg = document.createElement('img');
                 dividerImg.src = './img/divider.png';
